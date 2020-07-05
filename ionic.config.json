@@ -1,0 +1,7 @@
+{
+  "name": "UMVR",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
