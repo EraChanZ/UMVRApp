@@ -7,13 +7,8 @@
 <ion-content padding>
   <form #form="ngForm" (ngSubmit)="register(form)" method="post">
     <ion-item>
-        <ion-label position="floating">First Name</ion-label>
-        <ion-input ngModel name="fName"></ion-input>
-    </ion-item>
-  
-    <ion-item>
-      <ion-label position="floating">Last Name</ion-label>
-      <ion-input ngModel name="lName"></ion-input>
+        <ion-label position="floating">Username</ion-label>
+        <ion-input ngModel name="username"></ion-input>
     </ion-item>
   
     <ion-item>
@@ -24,6 +19,11 @@
     <ion-item>
       <ion-label position="floating">Password</ion-label>
       <ion-input type="password" ngModel name="password"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label position="floating">Password again</ion-label>
+      <ion-input type="password" ngModel name="password2"></ion-input>
     </ion-item>
   
     <ion-button type="submit" expand="full" color="danger">Register</ion-button>

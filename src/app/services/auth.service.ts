@@ -15,9 +15,9 @@ export class AuthService {
     private storage: NativeStorage,
     private env: EnvService,
   ) { }
-  login(email: String, password: String) {
+  login(username: String, password: String) {
     return this.http.post(this.env.API_URL + 'auth/login',
-      {email: email, password: password}
+      {username: username, password: password}
     ).pipe(
       tap(token => {
         this.storage.setItem('token', token)
@@ -33,10 +33,14 @@ export class AuthService {
       }),
     );
   }
-  register(fName: String, lName: String, email: String, password: String) {
+  register(username: String, email: String, password: String, password2: String) {
     return this.http.post(this.env.API_URL + 'auth/register',
-      {fName: fName, lName: lName, email: email, password: password}
-    )
+      {username: username, email: email, password: password, password2: password2},
+    ).pipe(
+      tap(data => {
+        console.log(data);
+      })
+      )
   }
   logout() {
       this.storage.remove("token");
@@ -44,8 +48,9 @@ export class AuthService {
       delete this.token;
   }
   user() {
+    console.log(this.token)
     const headers = new HttpHeaders({
-      'Authorization': this.token["token_type"]+" "+this.token["access_token"]
+      'Authorization': "Token " + this.token["token"]
     });
     return this.http.get<User>(this.env.API_URL + 'auth/user', { headers: headers })
     .pipe(
