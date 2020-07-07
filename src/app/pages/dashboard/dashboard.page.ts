@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user';
 @Component({
@@ -9,8 +8,8 @@ import { User } from 'src/app/models/user';
 })
 export class DashboardPage implements OnInit {
   user: User;
-  constructor(private menu: MenuController, private authService: AuthService) { 
-    this.menu.enable(true);
+  constructor(private authService: AuthService) { 
+    
   }
   ngOnInit() {
     

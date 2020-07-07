@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
       },
       () => {
         this.dismissLogin();
-        this.navCtrl.navigateRoot('/dashboard');
+        this.navCtrl.navigateRoot('/tabs');
       }
     );
   }

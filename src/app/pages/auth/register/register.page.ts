@@ -40,7 +40,7 @@ export class RegisterPage implements OnInit {
           },
           () => {
             this.dismissRegister();
-            this.navCtrl.navigateRoot('/dashboard');
+            this.navCtrl.navigateRoot('/tabs');
           }
         );
         this.alertService.presentToast(data['message']);
