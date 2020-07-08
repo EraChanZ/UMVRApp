@@ -33,9 +33,9 @@ export class AuthService {
       }),
     );
   }
-  register(username: String, email: String, password: String, password2: String) {
+  register(username: String, first_name: String, last_name: String, email: String, password: String, password2: String) {
     return this.http.post(this.env.API_URL + 'auth/register',
-      {username: username, email: email, password: password, password2: password2},
+      {username: username, first_name: first_name, last_name: last_name, email: email, password: password, password2: password2},
     ).pipe(
       tap(data => {
         console.log(data);
@@ -48,7 +48,6 @@ export class AuthService {
       delete this.token;
   }
   user() {
-    console.log(this.token)
     const headers = new HttpHeaders({
       'Authorization': "Token " + this.token["token"]
     });

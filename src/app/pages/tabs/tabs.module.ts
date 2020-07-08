@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { AuthGuard } from 'C:/Users/User/Desktop/UMVR/src/app/guard/auth.guard';
+import { AuthGuard } from '../../guard/auth.guard';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [

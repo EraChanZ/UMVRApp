@@ -30,9 +30,14 @@ export class RegisterPage implements OnInit {
     return await loginModal.present();
   }
   register(form: NgForm) {
-    this.authService.register(form.value.username, form.value.email, form.value.password, form.value.password2).subscribe(
+    this.authService.register(form.value.username, form.value.first_name, form.value.last_name, form.value.email, form.value.password, form.value.password2).subscribe(
       data => {
-        this.authService.login(form.value.username, form.value.password).subscribe(
+        if (!('response' in data)){
+          this.alertService.presentToast("Не удалось зарегистрироваться");
+        }
+        else
+        {
+          this.authService.login(form.value.username, form.value.password).subscribe(
           data => {
           },
           error => {
@@ -41,9 +46,8 @@ export class RegisterPage implements OnInit {
           () => {
             this.dismissRegister();
             this.navCtrl.navigateRoot('/tabs');
-          }
-        );
-        this.alertService.presentToast(data['message']);
+          });
+        }
       },
       error => {
         console.log(error);

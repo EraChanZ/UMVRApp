@@ -7,18 +7,12 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  user: User;
-  constructor(private authService: AuthService) { 
+  constructor() { 
     
   }
   ngOnInit() {
     
   }
   ionViewWillEnter() {
-    this.authService.user().subscribe(
-      user => {
-        this.user = user;
-      }
-    );
   }
 }

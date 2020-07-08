@@ -1,9 +1,47 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>personal</ion-title>
-  </ion-toolbar>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-icon class="iconSize" name="person-circle-outline" slot = 'start'></ion-icon>
+        <div>
+          <ion-label class = "BigText" *ngIf="user != undefined">{{user['first_name']}} {{user['last_name']}}</ion-label>
+          <ion-button color="light">Редактировать профиль</ion-button>
+        </div>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 </ion-header>
-
 <ion-content>
-
+  <ion-grid>
+    <ion-row>
+      <ion-item>
+        <ion-icon class = 'settingIcon' name="settings-outline" slot='start'></ion-icon>
+        <ion-button class = 'settingText' fill="clear">Настройки приложения</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-icon class = 'settingIcon' name="star-outline" slot='start'></ion-icon>
+        <ion-button class = 'settingText' fill="clear">Избранное</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-icon class = 'settingIcon' name="help-circle-outline" slot='start'></ion-icon>
+        <ion-button class = 'settingText' fill="clear">Добавить площадку</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-icon class = 'settingIcon' name="file-tray-full-outline" slot='start'></ion-icon>
+        <ion-button class = 'settingText' fill="clear">Обратиться в тех. поддержку</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-icon class = 'settingIcon' name="share-social-outline" slot='start'></ion-icon>
+        <ion-button class = 'settingText' fill="clear">Поделиться приложением</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-icon class = 'settingIcon' name="checkmark-circle-outline" slot='start'></ion-icon>
+        <ion-button class = 'settingText' fill="clear">Оценить приложение</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-icon class = 'settingIcon' name="exit-outline" slot='start'></ion-icon>
+        <ion-button class = 'settingText' fill="clear" (click)="logOut()">Выйти из приложения</ion-button>
+      </ion-item>
+    </ion-row>
+  </ion-grid>
 </ion-content>
