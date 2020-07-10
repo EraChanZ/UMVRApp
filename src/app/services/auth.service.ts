@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { EnvService } from './env.service';
 import { User } from '../models/user';
+import { Court } from '../models/court';
 @Injectable({
   providedIn: 'root'
 })
@@ -51,13 +52,24 @@ export class AuthService {
     const headers = new HttpHeaders({
       'Authorization': "Token " + this.token["token"]
     });
-    return this.http.get<User>(this.env.API_URL + 'auth/user', { headers: headers })
+    return this.http.get<User>(this.env.API_URL + 'auth/user/get_data/', { headers: headers })
     .pipe(
       tap(user => {
         return user;
       })
     )
   }
+  getCourts(){
+    const headers = new HttpHeaders({
+      'Authorization': "Token " + this.token["token"]
+    });
+    return this.http.get<Array<Court>>(this.env.API_URL + 'courts/court/', { headers: headers }).pipe(
+      tap(listofcourts => {
+        return listofcourts;
+      })
+    )
+  }
+
   getToken() {
     return this.storage.getItem('token').then(
       data => {
