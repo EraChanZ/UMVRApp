@@ -4,6 +4,7 @@ import { LoginPage } from '../login/login.page';
 import { AuthService } from 'src/app/services/auth.service';
 import { NgForm } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
+import { error } from 'protractor';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -30,30 +31,30 @@ export class RegisterPage implements OnInit {
     return await loginModal.present();
   }
   register(form: NgForm) {
-    this.authService.register(form.value.username, form.value.first_name, form.value.last_name, form.value.email, form.value.password, form.value.password2).subscribe(
+    this.authService.register(form.value.first_name, form.value.last_name, form.value.email, form.value.password).then(
       data => {
         if (!('response' in data)){
           this.alertService.presentToast("Не удалось зарегистрироваться");
         }
         else
         {
-          this.authService.login(form.value.username, form.value.password).subscribe(
-          data => {
-          },
-          error => {
-            console.log(error);
-          },
-          () => {
+          this.authService.login(form.value.email, form.value.password).then(
+          data => { 
+            this.alertService.presentToast("Успешно");
             this.dismissRegister();
             this.navCtrl.navigateRoot('/tabs');
-          });
+          },
+          ).catch(
+            error => {
+              console.log(error);
+              this.alertService.presentToast(JSON.stringify(error));
+            }
+          );
         }
-      },
+      }, 
+    ).catch(
       error => {
-        console.log(error);
-      },
-      () => {
-        
+          console.log(error);        
       }
     );
   }

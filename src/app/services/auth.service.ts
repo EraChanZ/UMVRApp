@@ -5,6 +5,9 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { EnvService } from './env.service';
 import { User } from '../models/user';
 import { Court } from '../models/court';
+import { HTTP } from '@ionic-native/http/ngx'
+import { error } from 'protractor';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,36 +15,44 @@ export class AuthService {
   isLoggedIn = false;
   token:any;
   constructor(
-    private http: HttpClient,
+    private http: HTTP,
     private storage: NativeStorage,
     private env: EnvService,
   ) { }
   login(username: String, password: String) {
     return this.http.post(this.env.API_URL + 'auth/login',
-      {username: username, password: password}
-    ).pipe(
-      tap(token => {
-        this.storage.setItem('token', token)
+      {username: username, password: password}, {}
+    ).then(
+      token => {
+        let normToken = JSON.parse(token.data)['token']
+        this.storage.setItem('token', normToken)
         .then(
           () => {
             console.log('Token Stored');
           },
-          error => console.error('Error storing item', error)
+          error => {
+            console.error('Error storing item', error)
+            return error;
+          }
         );
-        this.token = token;
+        this.token = normToken;
         this.isLoggedIn = true;
-        return token;
-      }),
+        return normToken;
+      },
     );
   }
-  register(username: String, first_name: String, last_name: String, email: String, password: String, password2: String) {
+  register(first_name: String, last_name: String, email: String, password: String) {
     return this.http.post(this.env.API_URL + 'auth/register',
-      {username: username, first_name: first_name, last_name: last_name, email: email, password: password, password2: password2},
-    ).pipe(
-      tap(data => {
-        console.log(data);
-      })
-      )
+      {username: email, first_name: first_name, last_name: last_name, email: email, password: password, password2: password}, {}
+    ).then(
+      data => {
+        return JSON.parse(data.data)
+      }
+    ).catch (
+      error => {
+        return error
+      }
+    )
   }
   logout() {
       this.storage.remove("token");
@@ -49,24 +60,28 @@ export class AuthService {
       delete this.token;
   }
   user() {
-    const headers = new HttpHeaders({
-      'Authorization': "Token " + this.token["token"]
-    });
-    return this.http.get<User>(this.env.API_URL + 'auth/user/get_data/', { headers: headers })
-    .pipe(
-      tap(user => {
-        return user;
-      })
+    //const headers = new HttpHeaders({
+    //  'Authorization': "Token " + this.token["token"]
+    //});
+    return this.http.get(this.env.API_URL + 'auth/user/get_data/', {}, { "Authorization": "Token " + this.token })
+    .then(
+      user => {
+        return JSON.parse(user.data) as User;
+      }
     )
   }
   getCourts(){
-    const headers = new HttpHeaders({
-      'Authorization': "Token " + this.token["token"]
-    });
-    return this.http.get<Array<Court>>(this.env.API_URL + 'courts/court/', { headers: headers }).pipe(
-      tap(listofcourts => {
-        return listofcourts;
-      })
+    //const headers = new HttpHeaders({
+    //  'Authorization': "Token " + this.token["token"]
+    //});
+    return this.http.get(this.env.API_URL + 'courts/court/', {}, { "Authorization": "Token " + this.token }).then
+      (listofcourts => {
+        return JSON.parse(listofcourts.data) as Array<Court>;
+      }
+    ).catch (
+      error => {
+        return error;
+      }
     )
   }
 

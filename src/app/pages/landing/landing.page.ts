@@ -3,6 +3,7 @@ import { ModalController, MenuController, NavController } from '@ionic/angular';
 import { RegisterPage } from '../auth/register/register.page';
 import { LoginPage } from '../auth/login/login.page';
 import { AuthService } from 'src/app/services/auth.service';
+declare var google;
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
@@ -18,6 +19,7 @@ export class LandingPage implements OnInit {
     this.menu.enable(false);
   }
   ionViewWillEnter() {
+    console.log(google)
     this.authService.getToken().then(() => {
       if(this.authService.isLoggedIn) {
         this.navCtrl.navigateRoot('/dashboard');

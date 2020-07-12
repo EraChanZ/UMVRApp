@@ -32,18 +32,17 @@ export class LoginPage implements OnInit {
     return await registerModal.present();
   }
   login(form: NgForm) {
-    this.authService.login(form.value.username, form.value.password).subscribe(
+    this.authService.login(form.value.username, form.value.password).then(
       data => {
         this.alertService.presentToast("Успешный вход!");
-      },
-      error => {
-        this.alertService.presentToast("Не удалось войти");
-        console.log(error);
-      },
-      () => {
         this.dismissLogin();
         this.navCtrl.navigateRoot('/tabs');
+      },
+    ).catch(
+      error => {
+        this.alertService.presentToast(JSON.stringify(error));
       }
     );
+    
   }
 }
