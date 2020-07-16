@@ -1,0 +1,28 @@
+.myCard {
+    position:relative;
+}
+
+.myOverlay{
+    left: 15px;
+    right: 15px;
+    height: 60px;
+    position: absolute;
+    z-index: 99;
+    bottom: 15px;
+    margin: auto;
+    opacity: 0.99;
+    background: rgb(133, 133, 133);
+}
+
+.card-title {
+    color: rgb(12, 129, 12);
+    margin-left: 15px;
+    margin-top: 10px;
+    font-size: 1.25em;
+}
+
+.card-subtitle {
+    color: rgb(147, 25, 151);
+    font-size: 1.1em;
+    margin-left: 15px;
+}

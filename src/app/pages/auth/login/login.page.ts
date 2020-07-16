@@ -34,9 +34,14 @@ export class LoginPage implements OnInit {
   login(form: NgForm) {
     this.authService.login(form.value.username, form.value.password).then(
       data => {
-        this.alertService.presentToast("Успешный вход!");
-        this.dismissLogin();
-        this.navCtrl.navigateRoot('/tabs');
+        if (data['success']){
+          this.alertService.presentToast("Успешный вход!");
+          this.dismissLogin();
+          this.navCtrl.navigateRoot('/tabs');
+        }
+        else{
+          this.alertService.presentToast(JSON.stringify(data['errors']));
+        }
       },
     ).catch(
       error => {

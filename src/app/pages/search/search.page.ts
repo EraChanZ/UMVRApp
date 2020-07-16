@@ -1,32 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
-import { Court } from 'src/app/models/court';
-
+import { NavController } from '@ionic/angular';
+import { CourtService } from 'src/app/services/court.service';
+import { Router } from '@angular/router';
+import { AlertService } from 'src/app/services/alert.service';
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage implements OnInit {
-  courts: Array<Court>
-  courtsString: string
-  constructor(private authService: AuthService,) { }
+
+  viewIcon = "map-outline";
+  iconList = ["map-outline", "list-outline"];
+  pathList = ["courtlist", "courtmap"]
+
+  constructor(private courtService: CourtService,
+              private alertService: AlertService,
+              private navCtrl: NavController,
+              private router: Router) { }
 
   ngOnInit() {
+
   }
 
-  test(){
-    console.log('test')
+  changeView() {
+    let nextNumb = (+(!(this.iconList.findIndex(el => el == this.viewIcon))))
+    this.router.navigate(['/tabs/search/', this.pathList[nextNumb]])
+    this.viewIcon = this.iconList[nextNumb]
   }
 
-  ionViewWillEnter() {
-    this.authService.getCourts().catch(
-      arrayofcourts => {
-        this.courts = arrayofcourts;
-        this.courtsString = JSON.stringify(this.courts);
-        console.log(this.courts)
-      }
-    );
-  }
+  
 
 }

@@ -4,7 +4,6 @@ import { tap } from 'rxjs/operators';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { EnvService } from './env.service';
 import { User } from '../models/user';
-import { Court } from '../models/court';
 import { HTTP } from '@ionic-native/http/ngx'
 import { error } from 'protractor';
 
@@ -13,7 +12,7 @@ import { error } from 'protractor';
 })
 export class AuthService {
   isLoggedIn = false;
-  token:any;
+  token:any = undefined;
   constructor(
     private http: HTTP,
     private storage: NativeStorage,
@@ -23,22 +22,23 @@ export class AuthService {
     return this.http.post(this.env.API_URL + 'auth/login',
       {username: username, password: password}, {}
     ).then(
-      token => {
-        let normToken = JSON.parse(token.data)['token']
-        this.storage.setItem('token', normToken)
-        .then(
-          () => {
-            console.log('Token Stored');
-          },
-          error => {
-            console.error('Error storing item', error)
-            return error;
-          }
-        );
-        this.token = normToken;
-        this.isLoggedIn = true;
-        return normToken;
+      data => {
+        let jsonResponse = JSON.parse(data.data)
+        if (jsonResponse.hasOwnProperty("token")){
+          this.storage.setItem('token', jsonResponse["token"])
+          this.token = jsonResponse["token"];
+          this.isLoggedIn = true;
+          jsonResponse['success'] = true
+          return jsonResponse;
+        }
+        else {
+          return {"errors": JSON.stringify(jsonResponse), 'success':false}
+        }
       },
+    ).catch(
+      error => {
+        return {'errors': error, 'success':false}
+      }
     );
   }
   register(first_name: String, last_name: String, email: String, password: String) {
@@ -46,11 +46,12 @@ export class AuthService {
       {username: email, first_name: first_name, last_name: last_name, email: email, password: password, password2: password}, {}
     ).then(
       data => {
-        return JSON.parse(data.data)
+        let responseJson = JSON.parse(data.data)
+        return responseJson
       }
     ).catch (
       error => {
-        return error
+        return {"errors": error, "success": false}
       }
     )
   }
@@ -65,40 +66,42 @@ export class AuthService {
     //});
     return this.http.get(this.env.API_URL + 'auth/user/get_data/', {}, { "Authorization": "Token " + this.token })
     .then(
-      user => {
-        return JSON.parse(user.data) as User;
+      data => {
+        let responseJson = JSON.parse(data.data)
+        if (responseJson.hasOwnProperty('detail')){
+          return {'success':false, 'errors':responseJson}
+        } else{
+          return {'success':true, 'data': responseJson as User}
+        }
       }
-    )
-  }
-  getCourts(){
-    //const headers = new HttpHeaders({
-    //  'Authorization': "Token " + this.token["token"]
-    //});
-    return this.http.get(this.env.API_URL + 'courts/court/', {}, { "Authorization": "Token " + this.token }).then
-      (listofcourts => {
-        return JSON.parse(listofcourts.data) as Array<Court>;
-      }
-    ).catch (
+    ).catch(
       error => {
-        return error;
+        return {'success':false, 'errors':error}
       }
     )
   }
 
   getToken() {
-    return this.storage.getItem('token').then(
-      data => {
-        this.token = data;
-        if(this.token != null) {
-          this.isLoggedIn=true;
-        } else {
+    const p = new Promise((res, rej) => {
+      (this.token) ? res() : rej()
+    })
+    return p.then(() => {
+      this.isLoggedIn=true;
+    }).catch(() => {
+      return this.storage.getItem('token').then(
+        data => {
+          this.token = data;
+          if(this.token != null) {
+            this.isLoggedIn=true;
+          } else {
+            this.isLoggedIn=false;
+          }
+        },
+        error => {
+          this.token = null;
           this.isLoggedIn=false;
         }
-      },
-      error => {
-        this.token = null;
-        this.isLoggedIn=false;
-      }
-    );
+      )
+    })
   }
 }

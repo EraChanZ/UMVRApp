@@ -33,28 +33,33 @@ export class RegisterPage implements OnInit {
   register(form: NgForm) {
     this.authService.register(form.value.first_name, form.value.last_name, form.value.email, form.value.password).then(
       data => {
-        if (!('response' in data)){
-          this.alertService.presentToast("Не удалось зарегистрироваться");
+        if (data['success']){
+          this.authService.login(form.value.email, form.value.password).then(
+            data2 => { 
+              if (data2['success']){
+                this.alertService.presentToast("Успешно");
+                this.dismissRegister();
+                this.navCtrl.navigateRoot('/tabs');
+              }
+              else{
+                this.alertService.presentToast(JSON.stringify(data2['errors']));
+              }
+            },
+            ).catch(
+              error2 => {
+                console.log(error2);
+                this.alertService.presentToast(JSON.stringify(error2));
+              }
+            );
         }
         else
         {
-          this.authService.login(form.value.email, form.value.password).then(
-          data => { 
-            this.alertService.presentToast("Успешно");
-            this.dismissRegister();
-            this.navCtrl.navigateRoot('/tabs');
-          },
-          ).catch(
-            error => {
-              console.log(error);
-              this.alertService.presentToast(JSON.stringify(error));
-            }
-          );
+          this.alertService.presentToast(JSON.stringify(data['errors']));
         }
       }, 
     ).catch(
       error => {
-          console.log(error);        
+        this.alertService.presentToast(JSON.stringify(error));     
       }
     );
   }

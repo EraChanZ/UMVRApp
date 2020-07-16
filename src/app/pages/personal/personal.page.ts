@@ -24,8 +24,12 @@ export class PersonalPage implements OnInit {
   }
   ionViewWillEnter() {
     this.authService.user().then(
-      user => {
-        this.user = user;
+      data => {
+        if (data['success']){
+          this.user = data['data'];
+        }else{
+          this.alertService.presentToast(JSON.stringify(data['errors']));
+        }
       }
     ).catch(
       error => {

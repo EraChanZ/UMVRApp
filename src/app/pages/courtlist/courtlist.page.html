@@ -1,0 +1,7 @@
+  <ion-card *ngFor="let item of courtList" class="myCard">
+    <ion-img [src]="item.main_image"></ion-img>
+    <div class="myOverlay">
+       <div class="card-title">{{item.name}}</div>
+       <div class="card-subtitle">{{envService.METRO_LIST[item.nearest_metro]}}</div>
+    </div>
+  </ion-card>

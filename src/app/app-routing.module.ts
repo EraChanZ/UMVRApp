@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AuthGuard } from './guard/auth.guard';
 const routes: Routes = [
   {
@@ -12,12 +12,16 @@ const routes: Routes = [
   { path: 'register', loadChildren: './pages/auth/register/register.module#RegisterPageModule' },
   
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule', canActivate: [AuthGuard]},
+  {
+    path: 'courtmap',
+    loadChildren: () => import('./pages/courtmap/courtmap.module').then( m => m.CourtmapPageModule)
+  },
   
   //{ path: 'home', loadChildren: './home/home.module#HomePageModule', canActivate: [AuthGuard] },
   //{ path: 'list', loadChildren: './list/list.module#ListPageModule', canActivate: [AuthGuard] },
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
