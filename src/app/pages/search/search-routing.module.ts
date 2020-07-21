@@ -7,7 +7,6 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'courtlist',
-    pathMatch: 'full'
   },
   {
     path: '',

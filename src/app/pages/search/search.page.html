@@ -3,13 +3,10 @@
     <ion-buttons slot="start">
       <ion-icon slot = "icon-only" name="person-circle-outline"></ion-icon>
     </ion-buttons>
-  <ion-searchbar></ion-searchbar>
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterItems()" (ionCancel)="searchCancel()" (ionClear)="searchCancel()" (search)="searchPushed($event)"> </ion-searchbar>
   <ion-buttons slot="end">
-    <ion-button>
+    <ion-button (click)="testymaps()">
       <ion-icon slot = "icon-only" name="options-outline"></ion-icon>
-    </ion-button>
-    <ion-button>
-      <ion-icon slot = "icon-only" name = "star-outline"></ion-icon>
     </ion-button>
     <ion-button (click)="changeView()">
       <ion-icon slot = "icon-only" name = "{{viewIcon}}"></ion-icon>
@@ -17,6 +14,13 @@
   </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <ion-router-outlet id="content" main></ion-router-outlet>
+<ion-content no-padding *ngIf = "filtereditems.length > 0">
+  <ion-grid ion-fixed no-padding>
+      <ion-list  style="position: absolute;z-index:1;width:100%;">
+        <ion-item button (click)="suggestionChosen(item.description)" *ngFor="let item of filtereditems" color="silver">
+          {{item.description}}
+        </ion-item>
+      </ion-list>
+  </ion-grid>
 </ion-content>
+<ion-router-outlet id="content" main></ion-router-outlet>

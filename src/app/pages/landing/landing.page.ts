@@ -22,7 +22,7 @@ export class LandingPage implements OnInit {
     console.log(google)
     this.authService.getToken().then(() => {
       if(this.authService.isLoggedIn) {
-        this.navCtrl.navigateRoot('/dashboard');
+        this.navCtrl.navigateRoot('/tabs');
       }
     });
   }

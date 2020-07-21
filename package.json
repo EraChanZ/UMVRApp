@@ -20,9 +20,11 @@
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
     "@capacitor/core": "2.2.1",
-    "@ionic-native/core": "^5.0.7",
+    "@ionic-native/core": "^5.27.0",
     "@ionic-native/geolocation": "^5.27.0",
+    "@ionic-native/google-maps": "^5.5.0",
     "@ionic-native/http": "^5.27.0",
+    "@ionic-native/keyboard": "^5.27.0",
     "@ionic-native/native-geocoder": "^5.27.0",
     "@ionic-native/native-storage": "^5.27.0",
     "@ionic-native/splash-screen": "^5.0.0",
@@ -34,6 +36,7 @@
     "cordova-plugin-advanced-http": "^2.5.1",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-geolocation": "^4.0.2",
+    "cordova-plugin-googlemaps": "^2.7.1",
     "cordova-plugin-nativegeocoder": "^3.4.1",
     "cordova-plugin-nativestorage": "^2.3.2",
     "rxjs": "~6.5.1",
@@ -85,7 +88,8 @@
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-nativegeocoder": {},
-      "cordova-plugin-nativestorage": {}
+      "cordova-plugin-nativestorage": {},
+      "cordova-plugin-googlemaps": {}
     },
     "platforms": [
       "android"
